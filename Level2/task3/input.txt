@@ -1,0 +1,8 @@
+Hello World
+Welcome to Cognifyz Technologies
+
+This is a sample text file.
+Java Programming is fun!
+
+Password: Deepak@123
+Email: Deepakgupta@gmail.com
