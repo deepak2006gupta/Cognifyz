@@ -57,7 +57,7 @@ class PasswordGenerator {
         }
 
         String password = "";
-
+        
         for (int i = 0; i < length; i++) {
             int index = random.nextInt(characters.length());
             password += characters.charAt(index);
