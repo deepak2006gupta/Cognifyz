@@ -39,7 +39,7 @@ class TicTacToe {
 
       while(var2) {
          char[][] var3 = new char[][]{{' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '}};
-         int var4 = 88;
+         char var4 = 'X';
          boolean var5 = false;
          int var6 = 0;
 
@@ -65,7 +65,7 @@ class TicTacToe {
                         System.out.println("It's a draw!");
                         var5 = true;
                      } else {
-                        var4 = var4 == 88 ? 79 : 88;
+                        var4 = var4 == 'X' ? 'O' : 'X';
                      }
                      break;
                   }
@@ -82,7 +82,7 @@ class TicTacToe {
          var2 = var9.equalsIgnoreCase("yes") || var9.equalsIgnoreCase("y");
       }
 
-      System.out.println("Thanks for playing!");
+      System.out.println("Thanks for playing!\n");
       scanner.close();
    }
 
