@@ -14,9 +14,9 @@ public class CurrencyConverter {
         ExchangeService exchangeService = new ExchangeService();
         boolean running = true;
 
-        System.out.println("==================================================");
-        System.out.println("          REAL-TIME CURRENCY CONVERTER           ");
-        System.out.println("==================================================");
+        System.out.println("+================================================+");
+        System.out.println("|              CURRENCY CONVERTER                |");
+        System.out.println("+================================================+");
         System.out.println("Supported Currencies include standard ISO codes.");
         System.out.println("Popular: " + POPULAR_CURRENCIES);
         System.out.println("==================================================");
@@ -86,9 +86,9 @@ public class CurrencyConverter {
             }
         }
 
-        System.out.println("\n==================================================");
-        System.out.println("   Thank you for using Real-Time Currency Converter!  ");
-        System.out.println("==================================================");
+        System.out.println("\n+================================================+");
+        System.out.println("|     Thank you for using Currency Converter!    |");
+        System.out.println("+================================================+");
         scanner.close();
     }
 }
