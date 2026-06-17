@@ -45,15 +45,25 @@ public class ExpenseManager {
 
             while ((line = reader.readLine()) != null) {
 
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
+
                 String[] parts = line.split(",");
 
-                expenses.add(
-                        new Expense(
-                                parts[0],
-                                parts[1],
-                                Double.parseDouble(parts[2])
-                        )
-                );
+                if (parts.length == 3) {
+                    try {
+                        expenses.add(
+                                new Expense(
+                                        parts[0],
+                                        parts[1],
+                                        Double.parseDouble(parts[2])
+                                )
+                        );
+                    } catch (NumberFormatException e) {
+                        System.out.println("Skipping malformed expense data: " + line);
+                    }
+                }
             }
 
         } catch (IOException e) {

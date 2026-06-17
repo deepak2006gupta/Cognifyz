@@ -18,11 +18,8 @@ public class ExpenseTrackerApp extends Application {
     private DatePicker datePicker;
     private ComboBox<String> categoryBox;
     private TextField amountField;
-
     private TableView<Expense> table;
-
     private ObservableList<Expense> expenseList;
-
     private Label totalLabel;
 
     @Override
@@ -30,16 +27,11 @@ public class ExpenseTrackerApp extends Application {
 
         expenseList = FXCollections.observableArrayList();
 
-        List<Expense> loadedExpenses =
-                ExpenseManager.loadExpenses();
-
+        List<Expense> loadedExpenses = ExpenseManager.loadExpenses();
         expenseList.addAll(loadedExpenses);
 
         Label title = new Label("Expense Tracker");
-        title.setStyle(
-                "-fx-font-size: 22px;" +
-                "-fx-font-weight: bold;"
-        );
+        title.setStyle("-fx-font-size: 22px; -fx-font-weight: bold;");
 
         datePicker = new DatePicker();
         datePicker.setPromptText("Select Date");
@@ -58,46 +50,31 @@ public class ExpenseTrackerApp extends Application {
         amountField = new TextField();
         amountField.setPromptText("Enter Amount");
 
-        Button addButton =
-                new Button("Add Expense");
-
-        Button deleteButton =
-                new Button("Delete Selected");
+        Button addButton = new Button("Add Expense");
+        Button deleteButton = new Button("Delete Selected");
 
         table = new TableView<>();
 
         TableColumn<Expense, String> dateColumn =
                 new TableColumn<>("Date");
-
-        dateColumn.setCellValueFactory(
-                data -> new SimpleStringProperty(
-                        data.getValue().getDate()
-                )
-        );
+        dateColumn.setCellValueFactory(data ->
+                new SimpleStringProperty(data.getValue().getDate()));
 
         TableColumn<Expense, String> categoryColumn =
                 new TableColumn<>("Category");
-
-        categoryColumn.setCellValueFactory(
-                data -> new SimpleStringProperty(
-                        data.getValue().getCategory()
-                )
-        );
+        categoryColumn.setCellValueFactory(data ->
+                new SimpleStringProperty(data.getValue().getCategory()));
 
         TableColumn<Expense, Number> amountColumn =
                 new TableColumn<>("Amount");
-
-        amountColumn.setCellValueFactory(
-                data -> new SimpleDoubleProperty(
-                        data.getValue().getAmount()
-                )
-        );
+        amountColumn.setCellValueFactory(data ->
+                new SimpleDoubleProperty(data.getValue().getAmount()));
 
         dateColumn.setPrefWidth(180);
         categoryColumn.setPrefWidth(220);
         amountColumn.setPrefWidth(180);
 
-        table.getColumns().addAll(
+        table.getColumns().setAll(
                 dateColumn,
                 categoryColumn,
                 amountColumn
@@ -106,47 +83,33 @@ public class ExpenseTrackerApp extends Application {
         table.setItems(expenseList);
 
         totalLabel = new Label();
-
         updateTotal();
 
         addButton.setOnAction(e -> addExpense());
-
         deleteButton.setOnAction(e -> deleteExpense());
 
-        HBox buttonBox =
-                new HBox(10, addButton, deleteButton);
+        HBox buttonBox = new HBox(10, addButton, deleteButton);
 
         VBox root = new VBox(12);
-
         root.setPadding(new Insets(15));
 
         root.getChildren().addAll(
-
                 title,
-
                 new Label("Date"),
                 datePicker,
-
                 new Label("Category"),
                 categoryBox,
-
                 new Label("Amount"),
                 amountField,
-
                 buttonBox,
-
                 table,
-
                 totalLabel
         );
 
-        Scene scene =
-                new Scene(root, 650, 550);
+        Scene scene = new Scene(root, 650, 550);
 
         stage.setTitle("Expense Tracker");
-
         stage.setScene(scene);
-
         stage.show();
     }
 
@@ -155,49 +118,41 @@ public class ExpenseTrackerApp extends Application {
         try {
 
             if (datePicker.getValue() == null) {
-
-                showError(
-                        "Please select a date."
-                );
+                showError("Please select a date.");
                 return;
             }
 
             if (categoryBox.getValue() == null) {
+                showError("Please select a category.");
+                return;
+            }
 
-                showError(
-                        "Please select a category."
-                );
+            if (amountField.getText().trim().isEmpty()) {
+                showError("Please enter an amount.");
+                return;
+            }
+
+            double amount =
+                    Double.parseDouble(amountField.getText().trim());
+
+            if (amount <= 0) {
+                showError("Amount must be greater than 0.");
                 return;
             }
 
             String date =
-                    datePicker.getValue()
-                            .format(
-                                    DateTimeFormatter.ofPattern(
-                                            "dd-MM-yyyy"
-                                    )
-                            );
-
-            String category =
-                    categoryBox.getValue();
-
-            double amount =
-                    Double.parseDouble(
-                            amountField.getText().trim()
+                    datePicker.getValue().format(
+                            DateTimeFormatter.ofPattern("dd-MM-yyyy")
                     );
+
+            String category = categoryBox.getValue();
 
             Expense expense =
-                    new Expense(
-                            date,
-                            category,
-                            amount
-                    );
+                    new Expense(date, category, amount);
 
             expenseList.add(expense);
 
-            ExpenseManager.saveExpenses(
-                    expenseList
-            );
+            ExpenseManager.saveExpenses(expenseList);
 
             updateTotal();
 
@@ -206,66 +161,52 @@ public class ExpenseTrackerApp extends Application {
             amountField.clear();
 
         } catch (NumberFormatException e) {
-
-            showError(
-                    "Please enter a valid amount."
-            );
+            showError("Please enter a valid amount.");
         }
     }
 
     private void deleteExpense() {
 
         Expense selectedExpense =
-                table.getSelectionModel()
-                        .getSelectedItem();
+                table.getSelectionModel().getSelectedItem();
 
-        if (selectedExpense != null) {
-
-            expenseList.remove(
-                    selectedExpense
-            );
-
-            ExpenseManager.saveExpenses(
-                    expenseList
-            );
-
-            updateTotal();
+        if (selectedExpense == null) {
+            showError("Please select an expense to delete.");
+            return;
         }
+
+        expenseList.remove(selectedExpense);
+
+        ExpenseManager.saveExpenses(expenseList);
+
+        updateTotal();
     }
 
     private void updateTotal() {
 
-        double total = 0;
-
-        for (Expense expense : expenseList) {
-
-            total += expense.getAmount();
-        }
+        double total = expenseList.stream()
+                .mapToDouble(Expense::getAmount)
+                .sum();
 
         totalLabel.setText(
                 "Total Expenses: ₹" +
-                String.format("%.2f", total)
+                        String.format("%.2f", total)
         );
     }
 
     private void showError(String message) {
 
         Alert alert =
-                new Alert(
-                        Alert.AlertType.ERROR
-                );
+                new Alert(Alert.AlertType.ERROR);
 
         alert.setTitle("Input Error");
-
         alert.setHeaderText(null);
-
         alert.setContentText(message);
 
         alert.showAndWait();
     }
 
     public static void main(String[] args) {
-
         launch(args);
     }
 }
