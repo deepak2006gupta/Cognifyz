@@ -1,6 +1,6 @@
 # Cognifyz Java Applications
 
-This workspace contains a collection of Java mini applications organized by level. The repository includes console programs, small interactive exercises, file-processing utilities, chat applications, and an expense tracker.
+This workspace contains a collection of Java mini applications organized by level. The repository includes console programs, small interactive exercises, file-processing utilities, chat applications, an expense tracker, and a currency converter.
 
 ## Overview
 
@@ -19,7 +19,7 @@ Level 3 focuses on multi-file and multi-class applications.
 - AppChat client-server chat: [Level3/AppChat/README.md](Level3/AppChat/README.md)
 - AppChat2 multi-client chat system: [Level3/AppChat2/README.md](Level3/AppChat2/README.md)
 - Expense Tracker: [Level3/ExpenseTracker/README.md](Level3/ExpenseTracker/README.md)
-- Task 4 placeholder: [Level3/task4/README.md](Level3/task4/README.md)
+- Currency Converter: [Level3/CurrencyConvertor/README.md](Level3/CurrencyConvertor/README.md)
 
 ## General Running Pattern
 
@@ -35,5 +35,4 @@ For multi-class applications such as the chat programs and the expense tracker, 
 ## Notes
 
 - Some tasks include extra text files used as input or output data.
-- The Level 3 Task 4 folder is currently a placeholder and does not yet contain an application.
 - For exact file names and commands, open the README inside each task folder.
